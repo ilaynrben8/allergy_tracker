@@ -82,7 +82,7 @@
                         <select id="trialStatus" class="w-full border rounded p-2 text-sm font-semibold">
                             <option value="GUVENLI" class="text-green-600">🟢 GÜVENLİ (Tolerasyon Var)</option>
                             <option value="ALERJIK" class="text-red-600">🔴 ALERJİK (Reaksiyon Verdi)</option>
-                            <option value="DENENIYOR" class="text-yellow-600">🟡 DENENİYOR (Şüpheli)</option>
+                            <option value="DENENİYOR" class="text-yellow-600">🟡 DENENİYOR (Şüpheli)</option>
                         </select>
                     </div>
                     <div>
@@ -126,9 +126,7 @@
 </div>
 
 <script>
-    const API_URL = const API_URL = "https://allergy-tracker-sr8k.onrender.com/api";
-        ? "http://localhost:8080/api"
-        : window.location.origin + "/api";
+    const API_URL = "https://allergy-tracker-sr8k.onrender.com/api";
 
     let seciliBebekId = null;
     let tumBebeklerHafiza = [];
