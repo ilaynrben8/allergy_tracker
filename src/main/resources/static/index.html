@@ -215,7 +215,7 @@
             alert("Bebek kaydı başarıyla eklendi!");
             document.getElementById("bebekForm").reset();
             document.getElementById("searchBox").value = "";
-            tumBebekleriYukle();
+            setTimeout(tumBebekleriYukle, 300);
         })
         .catch(err => {
             console.error("Kaydetme hatası:", err);
@@ -232,7 +232,9 @@
         }
 
         const filtrelenen = tumBebeklerHafiza.filter(b => {
-            const adSoyad = (b.firstName + " " + b.lastName).toLocaleLowerCase('tr-TR');
+            const ad = (b.firstName || "").toLocaleLowerCase('tr-TR');
+            const soyad = (b.lastName || "").toLocaleLowerCase('tr-TR');
+            const adSoyad = (ad + " " + soyad).trim();
             const notlar = (b.notes || "").toLocaleLowerCase('tr-TR');
 
             const reaksiyonVarMi = (b.foodTrials || []).some(t => {
@@ -242,7 +244,7 @@
                 return besinAdi.includes(query) || aciklama.includes(query) || durum.includes(query);
             });
 
-            return adSoyad.includes(query) || notlar.includes(query) || reaksiyonVarMi;
+            return adSoyad.includes(query) || ad.includes(query) || soyad.includes(query) || notlar.includes(query) || reaksiyonVarMi;
         });
 
         bebekListesiniCiz(filtrelenen);
