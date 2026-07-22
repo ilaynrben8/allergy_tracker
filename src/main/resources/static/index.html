@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerjik Bebek Takip Portalı</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-100 min-h-screen p-6">
+<div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Üst Başlık -->
+    <header class="bg-white p-6 rounded-xl shadow-md border-b-4 border-indigo-600 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">🍼 Alerjik Bebek Takip Portalı</h1>
+            <p class="text-sm text-gray-500">Diyetisyen Klinik Takip ve Besin-Semptom Yönetim Paneli</p>
+        </div>
+        <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full">Sistem Aktif</span>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Sol Kolon: Bebek Ekleme & Arama -->
+        <div class="space-y-6">
+            <!-- Yeni Bebek Ekle Formu -->
+            <div class="bg-white p-5 rounded-xl shadow-md">
+                <h2 class="text-lg font-bold text-gray-700 mb-4 border-b pb-2">➕ Yeni Danışan / Bebek Kaydı</h2>
+                <form id="bebekForm" class="space-y-3">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Bebek Adı</label>
+                        <input type="text" id="firstName" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Bebek Soyadı</label>
+                        <input type="text" id="lastName" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Doğum Tarihi</label>
+                        <input type="date" id="birthDate" required class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Genel Klinik Notlar</label>
+                        <textarea id="notes" rows="2" placeholder="Örn: İSPA şüphesi, anne diyette..." class="w-full border rounded p-2 text-sm focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold p-2 rounded text-sm transition">Bebeği Kaydet</button>
+                </form>
+            </div>
+
+            <!-- Bebek Arama ve Liste -->
+            <div class="bg-white p-5 rounded-xl shadow-md">
+                <h2 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">👶 Danışan Listesi</h2>
+                <input type="text" id="searchBox" oninput="bebekAra()" placeholder="İsim, besin veya tanı ara..." class="w-full border rounded p-2 text-sm mb-3">
+                <div id="bebekListesi" class="space-y-2 max-h-60 overflow-y-auto">
+                    <!-- Bebekler buraya gelecek -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Kolon: Bebek Detayı ve Reaksiyon Tablosu -->
+        <div class="md:col-span-2 space-y-6">
+
+            <!-- Seçili Bebek Kartı -->
+            <div id="seciliBebekKart" class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500">
+                <h3 class="text-xl font-bold text-indigo-900" id="bebekAdiHeader">Lütfen Sol Taraftan Bir Bebek Seçin</h3>
+                <p class="text-sm text-gray-500 mt-1" id="bebekDetayHeader">Alerji ve besin reaksiyon geçmişini görmek için tıklayın.</p>
+            </div>
+
+            <!-- Reaksiyon / Deneme Ekleme Formu -->
+            <div id="reaksiyonFormAlani" class="bg-white p-5 rounded-xl shadow-md hidden">
+                <h3 class="text-md font-bold text-gray-700 mb-3 border-b pb-2">🥗 Yeni Besin Denemesi ve Reaksiyon Kaydı Ekle</h3>
+                <form id="reaksiyonForm" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Besin Adı</label>
+                        <input type="text" id="foodName" placeholder="Örn: Yumurta Sarısı" required class="w-full border rounded p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Kategori</label>
+                        <input type="text" id="foodCategory" placeholder="Örn: Süt/Yumurta, Sebze" class="w-full border rounded p-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Tolerasyon Durumu</label>
+                        <select id="trialStatus" class="w-full border rounded p-2 text-sm font-semibold">
+                            <option value="GUVENLI" class="text-green-600">🟢 GÜVENLİ (Tolerasyon Var)</option>
+                            <option value="ALERJIK" class="text-red-600">🔴 ALERJİK (Reaksiyon Verdi)</option>
+                            <option value="DENENIYOR" class="text-yellow-600">🟡 DENENİYOR (Şüpheli)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">Şiddet (1 - 5)</label>
+                        <input type="number" id="severity" min="1" max="5" value="1" class="w-full border rounded p-2 text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="text-xs font-semibold text-gray-600">Reaksiyon / Semptom Detayı</label>
+                        <input type="text" id="reactionDesc" placeholder="Örn: Tüketimden 2 saat sonra döküntü ve mukuslu kaka..." class="w-full border rounded p-2 text-sm">
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold p-2 rounded text-sm transition">Reaksiyonu Kaydet</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Besin ve Semptom Zaman Çizelgesi (Timeline) -->
+            <div id="reaksiyonListesiAlani" class="bg-white p-5 rounded-xl shadow-md hidden">
+                <h3 class="text-md font-bold text-gray-700 mb-3 border-b pb-2">📋 Besin Tolerasyon ve Semptom Geçmişi</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 text-gray-600 border-b">
+                        <tr>
+                            <th class="p-2">Besin</th>
+                            <th class="p-2">Durum</th>
+                            <th class="p-2">Tarih</th>
+                            <th class="p-2">Semptom / Açıklama</th>
+                            <th class="p-2">Şiddet</th>
+                            <th class="p-2">İşlem</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reaksiyonTablosu">
+                        <!-- Reaksiyonlar buraya gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:8080/api"
+        : window.location.origin + "/api";
+
+    let seciliBebekId = null;
+    let tumBebeklerHafiza = [];
+    let seciliReaksiyonlar = [];
+
+    window.onload = function() {
+        tumBebekleriYukle();
+    };
+
+    function tumBebekleriYukle() {
+        fetch(API_URL + "/bebekler")
+            .then(res => {
+                if (!res.ok) throw new Error("Sunucu yanıt vermedi");
+                return res.json();
+            })
+            .then(data => {
+                tumBebeklerHafiza = data || [];
+                bebekListesiniCiz(tumBebeklerHafiza);
+            })
+            .catch(err => console.error("Bebekler yüklenirken hata:", err));
+    }
+
+    function bebekListesiniCiz(bebekler) {
+        const container = document.getElementById("bebekListesi");
+        container.innerHTML = "";
+
+        if (!bebekler || bebekler.length === 0) {
+            container.innerHTML = "<p class='text-xs text-gray-400 p-2'>Kayıtlı bebek bulunamadı.</p>";
+            return;
+        }
+
+        bebekler.forEach(b => {
+            const div = document.createElement("div");
+            div.className = "p-3 border rounded-lg hover:bg-indigo-50 transition flex justify-between items-center bg-white shadow-sm mb-2";
+
+            const infoDiv = document.createElement("div");
+            infoDiv.className = "cursor-pointer flex-1";
+            infoDiv.onclick = function() {
+                bebekSec(b.id, b.firstName + " " + b.lastName, b.notes || '');
+            };
+            infoDiv.innerHTML = `
+                <p class="font-bold text-gray-800 text-sm">${b.firstName} ${b.lastName}</p>
+                <p class="text-xs text-gray-500">Doğum: ${b.birthDate || '-'}</p>
+            `;
+
+            const actionDiv = document.createElement("div");
+            actionDiv.className = "flex items-center space-x-2";
+
+            const btnSil = document.createElement("button");
+            btnSil.type = "button";
+            btnSil.className = "text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 p-1.5 rounded text-xs font-bold border border-red-200 transition";
+            btnSil.innerHTML = "🗑️ Sil";
+            btnSil.onclick = function(e) {
+                bebekSil(e, b.id, b.firstName);
+            };
+
+            actionDiv.appendChild(btnSil);
+            div.appendChild(infoDiv);
+            div.appendChild(actionDiv);
+            container.appendChild(div);
+        });
+    }
+
+    document.getElementById("bebekForm").onsubmit = function(e) {
+        e.preventDefault();
+
+        const payload = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            birthDate: document.getElementById("birthDate").value,
+            notes: document.getElementById("notes").value
+        };
+
+        fetch(API_URL + "/bebekler", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error("Kaydetme işlemi başarısız. HTTP Durum: " + res.status);
+            }
+            return res.text();
+        })
+        .then(() => {
+            alert("Bebek kaydı başarıyla eklendi!");
+            document.getElementById("bebekForm").reset();
+            document.getElementById("searchBox").value = "";
+            tumBebekleriYukle();
+        })
+        .catch(err => {
+            console.error("Kaydetme hatası:", err);
+            alert("Bebek kaydedilemedi! Lütfen backend bağlantısını kontrol edin.\nHata: " + err.message);
+        });
+    };
+
+    function bebekAra() {
+        const query = document.getElementById("searchBox").value.trim().toLocaleLowerCase('tr-TR');
+
+        if (!query) {
+            bebekListesiniCiz(tumBebeklerHafiza);
+            return;
+        }
+
+        const filtrelenen = tumBebeklerHafiza.filter(b => {
+            const adSoyad = (b.firstName + " " + b.lastName).toLocaleLowerCase('tr-TR');
+            const notlar = (b.notes || "").toLocaleLowerCase('tr-TR');
+
+            const reaksiyonVarMi = (b.foodTrials || []).some(t => {
+                const besinAdi = (t.food ? t.food.name : "").toLocaleLowerCase('tr-TR');
+                const aciklama = (t.reactionDescription || "").toLocaleLowerCase('tr-TR');
+                const durum = (t.status || "").toLocaleLowerCase('tr-TR');
+                return besinAdi.includes(query) || aciklama.includes(query) || durum.includes(query);
+            });
+
+            return adSoyad.includes(query) || notlar.includes(query) || reaksiyonVarMi;
+        });
+
+        bebekListesiniCiz(filtrelenen);
+    }
+
+    function bebekSec(id, adSoyad, notlar) {
+        seciliBebekId = id;
+        document.getElementById("bebekAdiHeader").innerText = "👶 " + adSoyad;
+        document.getElementById("bebekDetayHeader").innerText = "Klinik Not: " + (notlar || "Not girilmemiş.");
+        document.getElementById("reaksiyonFormAlani").classList.remove("hidden");
+        document.getElementById("reaksiyonListesiAlani").classList.remove("hidden");
+        reaksiyonlariYukle(id);
+    }
+
+    function reaksiyonlariYukle(bebekId) {
+        fetch(API_URL + "/bebekler/" + bebekId + "/reaksiyonlar")
+            .then(res => res.json())
+            .then(trials => {
+                seciliReaksiyonlar = trials || [];
+                const tbody = document.getElementById("reaksiyonTablosu");
+                tbody.innerHTML = "";
+
+                if (!seciliReaksiyonlar || seciliReaksiyonlar.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='6' class='p-3 text-xs text-gray-400 text-center'>Bu bebek için henüz besin denemesi/tanı girilmemiş.</td></tr>";
+                    return;
+                }
+
+                seciliReaksiyonlar.forEach((t, index) => {
+                    let statusBadge = "";
+                    if (t.status === "GUVENLI") statusBadge = "<span class='bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold'>🟢 GÜVENLİ</span>";
+                    else if (t.status === "ALERJIK") statusBadge = "<span class='bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold'>🔴 ALERJİK</span>";
+                    else statusBadge = "<span class='bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold'>🟡 DENENİYOR</span>";
+
+                    const foodName = t.food ? t.food.name : '-';
+                    const desc = t.reactionDescription || '-';
+
+                    tbody.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-2 font-bold">${foodName}</td>
+                            <td class="p-2">${statusBadge}</td>
+                            <td class="p-2 text-xs text-gray-500">${t.trialDate || '-'}</td>
+                            <td class="p-2 text-xs">${desc}</td>
+                            <td class="p-2 font-bold text-xs">${t.severity ? t.severity + '/5' : '-'}</td>
+                            <td class="p-2 flex space-x-1">
+                                <button onclick="reaksiyonDuzenleByIndex(${index})"
+                                        class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded font-semibold border border-indigo-200 transition">
+                                    ✏️ Güncelle
+                                </button>
+                                <button onclick="reaksiyonSil(${t.id}, '${foodName.replace(/'/g, "\\'")}')"
+                                        class="bg-red-50 hover:bg-red-100 text-red-600 text-xs px-2 py-1 rounded font-semibold border border-red-200 transition" title="Tanıyı Sil">
+                                    🗑️ Sil
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(err => console.error("Reaksiyonlar yüklenirken hata:", err));
+    }
+
+    document.getElementById("reaksiyonForm").onsubmit = function(e) {
+        e.preventDefault();
+        if (!seciliBebekId) return;
+
+        const foodName = document.getElementById("foodName").value;
+        const category = document.getElementById("foodCategory").value;
+
+        fetch(API_URL + "/besinler", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: foodName, category: category })
+        })
+        .then(res => res.json())
+        .then(food => {
+            const status = document.getElementById("trialStatus").value;
+            const desc = document.getElementById("reactionDesc").value;
+            const severity = document.getElementById("severity").value;
+
+            return fetch(API_URL + "/reaksiyon-ekle?bebekId=" + seciliBebekId + "&besinId=" + food.id + "&durum=" + status + "&aciklama=" + encodeURIComponent(desc) + "&siddet=" + severity, {
+                method: "POST"
+            });
+        })
+        .then(() => {
+            document.getElementById("reaksiyonForm").reset();
+            reaksiyonlariYukle(seciliBebekId);
+            tumBebekleriYukle();
+        })
+        .catch(err => alert("Reaksiyon eklenirken hata: " + err));
+    };
+
+    function bebekSil(event, id, isim) {
+        event.stopPropagation();
+
+        if (confirm(isim + " isimli bebeği ve tüm reaksiyon geçmişini silmek istediğinize emin misiniz?")) {
+            fetch(API_URL + "/bebekler/" + id, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (res.ok) {
+                    if (seciliBebekId === id) {
+                        seciliBebekId = null;
+                        document.getElementById("bebekAdiHeader").innerText = "Lütfen Sol Taraftan Bir Bebek Seçin";
+                        document.getElementById("bebekDetayHeader").innerText = "Alerji ve besin reaksiyon geçmişini görmek için tıklayın.";
+                        document.getElementById("reaksiyonFormAlani").classList.add("hidden");
+                        document.getElementById("reaksiyonListesiAlani").classList.add("hidden");
+                    }
+                    tumBebekleriYukle();
+                } else {
+                    alert("Bebek silinirken bir hata oluştu!");
+                }
+            })
+            .catch(err => console.error("Silme hatası:", err));
+        }
+    }
+
+    function reaksiyonDuzenleByIndex(index) {
+        const t = seciliReaksiyonlar[index];
+        if (!t) return;
+
+        const foodName = t.food ? t.food.name : 'Besin';
+
+        const yeniDurum = prompt(
+            `"${foodName}" için Yeni Tolerasyon Durumunu Seçin:\n\n` +
+            `1: GUVENLI (Tolerasyon Gelişti / Geçti)\n` +
+            `2: ALERJIK (Hâlâ Alerjik)\n` +
+            `3: DENENİYOR (Şüpheli)`,
+            t.status === "GUVENLI" ? "1" : (t.status === "ALERJIK" ? "2" : "3")
+        );
+
+        if (!yeniDurum) return;
+
+        let statusEnum = "DENENİYOR";
+        if (yeniDurum === "1" || yeniDurum.toUpperCase() === "GUVENLI") statusEnum = "GUVENLI";
+        else if (yeniDurum === "2" || yeniDurum.toUpperCase() === "ALERJIK") statusEnum = "ALERJIK";
+
+        const yeniAciklama = prompt("Güncel Semptom / Açıklama Notu:", t.reactionDescription || "Alerji geçti, tolerasyon sağlandı.");
+        if (yeniAciklama === null) return;
+
+        fetch(API_URL + "/reaksiyonlar/" + t.id + "?durum=" + statusEnum + "&aciklama=" + encodeURIComponent(yeniAciklama) + "&siddet=" + (t.severity || 1), {
+            method: "PUT"
+        })
+        .then(res => {
+            if (res.ok) {
+                reaksiyonlariYukle(seciliBebekId);
+                tumBebekleriYukle();
+            } else {
+                alert("Güncelleme sırasında bir hata oluştu.");
+            }
+        })
+        .catch(err => console.error("Güncelleme hatası:", err));
+    }
+
+    function reaksiyonSil(trialId, besinAdi) {
+        if (confirm(`"${besinAdi}" ait bu tanı/reaksiyon kaydını silmek istediğinize emin misiniz?`)) {
+            fetch(API_URL + "/reaksiyonlar/" + trialId, {
+                method: "DELETE"
+            })
+            .then(res => {
+                if (res.ok) {
+                    reaksiyonlariYukle(seciliBebekId);
+                    tumBebekleriYukle();
+                } else {
+                    alert("Tanı silinirken hata oluştu.");
+                }
+            })
+            .catch(err => console.error("Silme hatası:", err));
+        }
+    }
+</script>
+</body>
+</html>
