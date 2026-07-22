@@ -20,6 +20,7 @@ public class FoodTrial {
     private Food food;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "VARCHAR(255)")
     private TrialStatus status;
 
     private LocalDate trialDate;
