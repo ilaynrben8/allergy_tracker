@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: allergy-tracker
+    env: native
+    buildCommand: ./gradlew build -x test
+    startCommand: java -jar build/libs/allergy_tracker-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 21
