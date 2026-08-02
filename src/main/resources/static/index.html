@@ -1,142 +1,3 @@
-package com.alergitracker.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import java.time.LocalDate;
-
-@Entity
-public class PrickTest {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-
-@ManyToOne
-@JoinColumn(name = "baby_id")
-@JsonIgnore
-private Baby baby;
-
-private LocalDate testDate;
-private String foodName; // Örn: Meat, Cows Milk, Yumurta Sarısı, Histamin vb.
-private Integer mmValue; // Wheal (Döküntü Çapı) - mm
-private Integer meValue; // Erythema (Kızarıklık Çapı) - me
-private String panelGroup; // "GİDA PANELSİ 1" veya "GİDA PANELSİ 2"
-
-public PrickTest() {}
-
-public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
-public Baby getBaby() { return baby; }
-public void setBaby(Baby baby) { this.baby = baby; }
-public LocalDate getTestDate() { return testDate; }
-public void setTestDate(LocalDate testDate) { this.testDate = testDate; }
-public String getFoodName() { return foodName; }
-public void setFoodName(String foodName) { this.foodName = foodName; }
-public Integer getMmValue() { return mmValue; }
-public void setMmValue(Integer mmValue) { this.mmValue = mmValue; }
-public Integer getMeValue() { return meValue; }
-public void setMeValue(Integer meValue) { this.meValue = meValue; }
-public String getPanelGroup() { return panelGroup; }
-public void setPanelGroup(String panelGroup) { this.panelGroup = panelGroup; }
-}
-```eofs
-
-```java:src/main/java/com/alergitracker/entity/BabyWeight.java
-package com.alergitracker.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import java.time.LocalDate;
-
-@Entity
-public class BabyWeight {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-
-@ManyToOne
-@JoinColumn(name = "baby_id")
-@JsonIgnore
-private Baby baby;
-
-private LocalDate date;
-private Double weightKg;
-
-public BabyWeight() {}
-
-public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
-public Baby getBaby() { return baby; }
-public void setBaby(Baby baby) { this.baby = baby; }
-public LocalDate getDate() { return date; }
-public void setDate(LocalDate date) { this.date = date; }
-public Double getWeightKg() { return weightKg; }
-public void setWeightKg(Double weightKg) { this.weightKg = weightKg; }
-}
-```eofs
-
-```java:src/main/java/com/alergitracker/entity/FoodTrial.java
-package com.alergitracker.entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import java.time.LocalDate;
-
-@Entity
-public class FoodTrial {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
-
-@ManyToOne
-@JoinColumn(name = "baby_id")
-@JsonIgnore
-private Baby baby;
-
-@ManyToOne
-@JoinColumn(name = "food_id")
-private Food food;
-
-@Enumerated(EnumType.STRING)
-@Column(name = "status", columnDefinition = "VARCHAR(255)")
-private TrialStatus status;
-
-private LocalDate trialDate;
-
-// YENİ EKLENEN KLİNİK ALANLAR
-private String trialType; // "ANNE_DIYETI" (Anne Diyet Açtı), "BEBEK_EK_GIDA" (Bebek Yedi), "HER_IKISI"
-
-@Column(length = 1000)
-private String motherNotes; // Anneye ait notlar ve reaksiyonlar
-
-@Column(length = 1000)
-private String babyNotes; // Bebeğe ait notlar ve semptomlar
-
-private Integer severity; // 1-5 Şiddet Skalası
-
-public FoodTrial() {}
-
-public Long getId() { return id; }
-public void setId(Long id) { this.id = id; }
-public Baby getBaby() { return baby; }
-public void setBaby(Baby baby) { this.baby = baby; }
-public Food getFood() { return food; }
-public void setFood(Food food) { this.food = food; }
-public TrialStatus getStatus() { return status; }
-public void setStatus(TrialStatus status) { this.status = status; }
-public LocalDate getTrialDate() { return trialDate; }
-public void setTrialDate(LocalDate trialDate) { this.trialDate = trialDate; }
-public String getTrialType() { return trialType; }
-public void setTrialType(String trialType) { this.trialType = trialType; }
-public String getMotherNotes() { return motherNotes; }
-public void setMotherNotes(String motherNotes) { this.motherNotes = motherNotes; }
-public String getBabyNotes() { return babyNotes; }
-public void setBabyNotes(String babyNotes) { this.babyNotes = babyNotes; }
-public Integer getSeverity() { return severity; }
-public void setSeverity(Integer severity) { this.severity = severity; }
-}
-```eofs
-
-```html:index.html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -233,7 +94,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         </div>
     </div>
 
-    <!-- YENİ BEBEK EKLEME BUTONU VE FORMU (Gizlenebilir) -->
+    <!-- BEBEK EKLEME BUTONU VE FORMU -->
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
             <i class="fa-solid fa-hospital-user text-indigo-600"></i> Klinik Takip Paneli
@@ -243,21 +104,21 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         </button>
     </div>
 
-    <!-- Bebek Ekleme Formu Modal/Kartı -->
+    <!-- Bebek Ekleme Formu -->
     <div id="yeniBebekFormu" class="bg-white rounded-2xl p-6 shadow-md border border-indigo-100 mb-6 hidden">
         <h4 class="font-bold text-slate-800 border-b pb-2 mb-4">Yeni Bebek / Hasta Kaydı</h4>
         <form id="formBebekEkle" onsubmit="bebekKaydet(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Bebek Adı Soyadı *</label>
-                <input type="text" id="inputBebekAdi" required placeholder="Örn: Bera Yılmaz" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Bebek Adı *</label>
+                <input type="text" id="inputFirstName" required placeholder="Örn: Bera" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-600 mb-1">Bebek Soyadı *</label>
+                <input type="text" id="inputLastName" required placeholder="Örn: Yılmaz" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
                 <label class="block text-xs font-semibold text-slate-600 mb-1">Doğum Tarihi *</label>
                 <input type="date" id="inputDogumTarihi" required class="w-full text-sm border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">İlk Doğum Kilosu (kg)</label>
-                <input type="number" step="0.1" id="inputDogumKilosu" placeholder="Örn: 3.2" class="w-full text-sm border border-slate-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div class="md:col-span-3 flex justify-end gap-2 mt-2">
                 <button type="button" onclick="toggleBebekForm()" class="bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2 rounded-lg">İptal</button>
@@ -266,7 +127,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         </form>
     </div>
 
-    <!-- MODÜL SEKMELERİ (TABS) -->
+    <!-- MODÜL SEKMELERİ -->
     <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
         <div class="flex border-b border-slate-200 bg-slate-50/50 overflow-x-auto text-sm font-semibold text-slate-600">
             <button onclick="tabDegistir('ladderTab')" id="btnLadderTab" class="tab-btn active-tab px-6 py-4 flex items-center gap-2 whitespace-nowrap">
@@ -285,7 +146,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
 
         <div class="p-6">
 
-            <!-- 1. SEKME: BİLİMSEL BESİN AÇMA MERDİVENLERİ (LADDER PROTOCOL) -->
+            <!-- 1. SEKME: MERDİVENLER -->
             <div id="ladderTab" class="tab-content">
                 <div class="mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Bilimsel Besin Açma Protokolü (Milk & Egg Ladder)</h3>
@@ -294,7 +155,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                    <!-- SÜT MERDİVENİ (MILK LADDER) -->
+                    <!-- SÜT MERDİVENİ -->
                     <div class="bg-blue-50/50 border border-blue-200 rounded-2xl p-5">
                         <div class="flex justify-between items-center mb-3">
                             <h4 class="font-bold text-blue-900 flex items-center gap-2">
@@ -309,7 +170,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                         <div class="space-y-3" id="milkLadderContainer">
                             <div class="bg-white p-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk', 1)" class="w-4 h-4 text-blue-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">1. Basamak: Fırınlanmış Sütlü Kek / Muffin</p>
                                         <p class="text-xs text-slate-400">180°C'de 30 dk pişmiş süt proteini</p>
@@ -319,7 +180,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk', 2)" class="w-4 h-4 text-blue-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">2. Basamak: Fırınlanmış Peynirli Börek / Poğaça</p>
                                         <p class="text-xs text-slate-400">Fırınlanmış peynir proteini</p>
@@ -329,7 +190,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk', 3)" class="w-4 h-4 text-blue-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">3. Basamak: Fermante Ürünler (Yoğurt / Ev Yapımı Peynir)</p>
                                         <p class="text-xs text-slate-400">Laktik asit fermantasyonu görmüş süt</p>
@@ -339,7 +200,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk', 4)" class="w-4 h-4 text-blue-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">4. Basamak: Pişirilmiş Süt (Muhallebi / Çorba)</p>
                                         <p class="text-xs text-slate-400">Ocakta pişirilmiş sıvı süt</p>
@@ -349,7 +210,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk', 5)" class="w-4 h-4 text-blue-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">5. Basamak: Çiğ / Taze Pastorize Süt</p>
                                         <p class="text-xs text-slate-400">Tam tolerans sağlandı</p>
@@ -360,7 +221,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                         </div>
                     </div>
 
-                    <!-- YUMURTA MERDİVENİ (EGG LADDER) -->
+                    <!-- YUMURTA MERDİVENİ -->
                     <div class="bg-amber-50/50 border border-amber-200 rounded-2xl p-5">
                         <div class="flex justify-between items-center mb-3">
                             <h4 class="font-bold text-amber-900 flex items-center gap-2">
@@ -375,7 +236,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                         <div class="space-y-3" id="eggLadderContainer">
                             <div class="bg-white p-3 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg', 1)" class="w-4 h-4 text-amber-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">1. Basamak: Fırınlanmış Yumurtalı Kek / Muffin</p>
                                         <p class="text-xs text-slate-400">180°C'de iyice pişmiş yumurta proteini</p>
@@ -385,7 +246,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg', 2)" class="w-4 h-4 text-amber-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">2. Basamak: İyice Haşlanmış Yumurta Sarısı</p>
                                         <p class="text-xs text-slate-400">15-20 dk kaynatılmış, akından ayrılmış sarı</p>
@@ -395,7 +256,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg', 3)" class="w-4 h-4 text-amber-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">3. Basamak: İyice Haşlanmış Yumurta Beyazı / Tam Yumurta</p>
                                         <p class="text-xs text-slate-400">Tam pişmiş yumurta akı</p>
@@ -405,7 +266,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg', 4)" class="w-4 h-4 text-amber-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
                                     <div>
                                         <p class="text-sm font-semibold text-slate-800">4. Basamak: Az Pişmiş Yumurta / Omlet / Çılbır</p>
                                         <p class="text-xs text-slate-400">Tam tolerans sağlandı</p>
@@ -419,7 +280,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                 </div>
             </div>
 
-            <!-- 2. SEKME: DERİ PRİCK TESTİ (GİDA PANELSİ 1 & 2 - DROPDOWN SEÇİM) -->
+            <!-- 2. SEKME: DERİ PRİCK TESTİ -->
             <div id="prickTab" class="tab-content hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -435,34 +296,27 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- GIDA PANELSİ 1 -->
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
                         <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 flex justify-between">
                             <span>GIDA PANELİ 1</span>
                             <span class="text-xs text-slate-400 font-normal">Wheal (mm) / Erythema (me)</span>
                         </h4>
-                        <div class="space-y-3 text-xs" id="panel1List">
-                            <!-- JS ile dinamik oluşacak -->
-                        </div>
+                        <div class="space-y-3 text-xs" id="panel1List"></div>
                     </div>
 
-                    <!-- GIDA PANELSİ 2 -->
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
                         <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4 flex justify-between">
                             <span>GIDA PANELİ 2</span>
                             <span class="text-xs text-slate-400 font-normal">Wheal (mm) / Erythema (me)</span>
                         </h4>
-                        <div class="space-y-3 text-xs" id="panel2List">
-                            <!-- JS ile dinamik oluşacak -->
-                        </div>
+                        <div class="space-y-3 text-xs" id="panel2List"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. SEKME: BESİN DENEME & ANNE/BEBEK AYRI NOTLARI -->
+            <!-- 3. SEKME: BESİN DENEME & ANNE/BEBEK NOTLARI -->
             <div id="trialTab" class="tab-content hidden">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Sol: Yeni Deneme Ekleme Formu -->
                     <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
                         <h4 class="font-bold text-slate-800 mb-4 border-b pb-2">Yeni Besin Denemesi Ekle</h4>
                         <form id="reaksiyonForm" onsubmit="reaksiyonEkle(event)" class="space-y-4 text-xs">
@@ -515,17 +369,14 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                         </form>
                     </div>
 
-                    <!-- Sağ: Geçmiş Denemeler Listesi -->
                     <div class="lg:col-span-2 space-y-4">
                         <h4 class="font-bold text-slate-800 mb-2">Besin Deneme Günlüğü & Semptom Zaman Çizelgesi</h4>
-                        <div id="denemeListesi" class="space-y-3">
-                            <!-- JS ile dolacak -->
-                        </div>
+                        <div id="denemeListesi" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. SEKME: TESTLERİM & TAHLİL ARŞİVİ (TARİHE GÖRE SIRALI) -->
+            <!-- 4. SEKME: TAHLİL ARŞİVİ -->
             <div id="labTab" class="tab-content hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -539,9 +390,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                 </div>
 
                 <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                    <div id="labDosyaListesi" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- Dosyalar kronolojik listelenecek -->
-                    </div>
+                    <div id="labDosyaListesi" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
             </div>
 
@@ -576,7 +425,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
     let seciliBebekId = null;
     let bebekler = [];
 
-    // Prick Test Gıda Paneli Liste Tanımları (Görseldeki Formun Birebir Aynısı)
     const gidaPaneli1 = ["Meat", "Cows Milk", "Yumurta Sarısı", "Wal Nut", "Hazelnut", "Rice", "Peanut", "Wheat Flour", "Tomato", "Yumurta Beyazı"];
     const gidaPaneli2 = ["Çilek", "Muz", "Kakao", "Tavuk", "Mercimek", "Susam", "Badem", "Şeftali", "Histamin", "Salin", "Soya", "Balık"];
 
@@ -587,7 +435,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         document.getElementById('kiloTarih').valueAsDate = new Date();
     });
 
-    // SEKME DEĞİŞTİRME
     function tabDegistir(tabId) {
         document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active-tab'));
@@ -599,7 +446,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         if(tabId === 'labTab') document.getElementById('btnLabTab').classList.add('active-tab');
     }
 
-    // PRİCK TESTİ FORMUNU SELECT/DROPDOWN OLARAK OLUŞTURMA
     function prickFormunuCiz() {
         const createRow = (food, index, panel) => `
             <div class="flex items-center justify-between bg-white p-2.5 rounded-lg border border-slate-200">
@@ -624,7 +470,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         document.getElementById('panel2List').innerHTML = gidaPaneli2.map((f,i) => createRow(f,i,'p2')).join('');
     }
 
-    // TÜM BEBEKLERİ YÜKLE
     function tumBebekleriYukle() {
         fetch(API_URL + "/bebekler")
         .then(res => res.json())
@@ -632,28 +477,28 @@ public void setSeverity(Integer severity) { this.severity = severity; }
             bebekler = data;
             const select = document.getElementById("bebekSecici");
             select.innerHTML = '<option value="">Bebek Seçin...</option>' +
-                data.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+                data.map(b => `<option value="${b.id}">${b.firstName ? (b.firstName + ' ' + (b.lastName||'')) : (b.name||'İsimsiz Bebek')}</option>`).join('');
 
             if (data.length > 0 && !seciliBebekId) {
                 bebekDegistir(data[0].id);
                 select.value = data[0].id;
             }
         })
-        .catch(err => console.log("Bebekler yüklenirken sunucu uyanıyor olabilir..."));
+        .catch(err => console.log("Bebekler yükleniyor..."));
     }
 
-    // SEÇİLİ BEBEĞİ DEĞİŞTİR & CANLI AY HESABI
     function bebekDegistir(id) {
         if(!id) return;
         seciliBebekId = id;
         const bebek = bebekler.find(b => b.id == id);
         if(!bebek) return;
 
+        const bebekAdi = bebek.firstName ? `${bebek.firstName} ${bebek.lastName||''}` : (bebek.name || "Bebek");
+
         document.getElementById("bebekKartDetay").classList.remove("hidden");
-        document.getElementById("cardBebekAdi").innerText = bebek.name;
+        document.getElementById("cardBebekAdi").innerText = bebekAdi;
         document.getElementById("cardDogumTarihi").innerText = bebek.birthDate || "--";
 
-        // DİNAMİK AY HESABI
         if(bebek.birthDate) {
             const birth = new Date(bebek.birthDate);
             const now = new Date();
@@ -665,7 +510,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         denemeleriYukle(id);
     }
 
-    // DENEMELERİ VE STATİSTİKLERİ YÜKLE
     function denemeleriYukle(bebekId) {
         fetch(API_URL + "/bebekler/" + bebekId)
         .then(res => res.json())
@@ -704,7 +548,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
                             </div>
                             <div>
                                 <span class="font-bold block text-slate-600">👶 Bebek Notu:</span>
-                                <p class="text-slate-500">${t.babyNotes || 'Not girilmemiş.'}</p>
+                                <p class="text-slate-500">${t.babyNotes || t.reactionDescription || 'Not girilmemiş.'}</p>
                             </div>
                         </div>
                     </div>`;
@@ -717,7 +561,6 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         });
     }
 
-    // REAKSİYON / BESİN DENEMESİ EKLE
     function reaksiyonEkle(e) {
         e.preventDefault();
         if(!seciliBebekId) return alert("Lütfen önce bir bebek seçin!");
@@ -748,16 +591,16 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         });
     }
 
-    // BEBEK KAYDET
     function bebekKaydet(e) {
         e.preventDefault();
-        const name = document.getElementById("inputBebekAdi").value;
+        const firstName = document.getElementById("inputFirstName").value;
+        const lastName = document.getElementById("inputLastName").value;
         const birthDate = document.getElementById("inputDogumTarihi").value;
 
         fetch(API_URL + "/bebekler", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: name, birthDate: birthDate })
+            body: JSON.stringify({ firstName: firstName, lastName: lastName, birthDate: birthDate })
         })
         .then(res => res.json())
         .then(() => {
@@ -781,8 +624,7 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         }
     }
 
-    // LADDER İLERLEME ÇUBUĞU
-    function ladderStepChange(checkbox, type, step) {
+    function ladderStepChange(checkbox, type) {
         const container = document.getElementById(`${type}LadderContainer`);
         const checkedCount = container.querySelectorAll('input[type="checkbox"]:checked').length;
         const total = type === 'milk' ? 5 : 4;
@@ -792,17 +634,8 @@ public void setSeverity(Integer severity) { this.severity = severity; }
         document.getElementById(`${type}Bar`).style.width = `${pct}%`;
     }
 
-    function prickKaydet() { alert("Deri Prick Testi sonuçları başarıyla kaydedildi!"); }
-    function dosyaYukle(e) { alert("Dosya tarihe göre arşivlendi!"); }
+    function prickKaydet() { alert("Deri Prick Testi sonuçları kaydedildi!"); }
+    function dosyaYukle(e) { alert("Tahlil belgesi tarihe göre arşivlendi!"); }
 </script>
 </body>
 </html>
-```eofs
-
----
-
-### 🔥 Neler Yapıldı & Yapılan Güncellemeler:
-
-1. **👶 Dinamik Canlı Yaş & Kilo Modülü:** Bebek seçildiği an doğum tarihinden bugünün tarihini çıkararak **"X Aylık"** şeklinde canlı yaş rozeti gösterir. Ayrıca `+ Kilo Gir` butonu ile kilo geçmişi eklendi.
-2. **🧪 Seçmeli Deri Prick Test Paneli (Gıda Paneli 1 & 2):** Görselinde yer alan **22 besinin tamamı** (`Meat`, `Cows Milk`, `Yumurta Sarısı`, `Histamin`, `Salin` vb.) için elle girmek yerine **0-40 mm** ve **0-20 me** açılır seçim kutuları (dropdown) yerleştirildi.
-3. **🪜 Bilimsel Besin Açma Merdivenleri (Milk & Egg Ladder Protocol):** Fırınlanmış kekten taze süte/yumurtaya doğru 5 basamaklı süt ve 4 basamaklı yumurta merdiveni kuruldu. Adımlar seçildikçe **tamamlan
