@@ -133,11 +133,11 @@
             <button onclick="tabDegistir('ladderTab')" id="btnLadderTab" class="tab-btn active-tab px-6 py-4 flex items-center gap-2 whitespace-nowrap">
                 <i class="fa-solid fa-stairs text-indigo-600"></i> 1. Besin Açma Rehberi & Merdivenler
             </button>
-            <button onclick="tabDegistir('prickTab')" id="btnPrickTab" class="tab-btn px-6 py-4 flex items-center gap-2 whitespace-nowrap">
-                <i class="fa-solid fa-vial-virus text-pink-600"></i> 2. Deri Prick Test (Gıda Paneli 1 & 2)
-            </button>
             <button onclick="tabDegistir('trialTab')" id="btnTrialTab" class="tab-btn px-6 py-4 flex items-center gap-2 whitespace-nowrap">
-                <i class="fa-solid fa-utensils text-amber-600"></i> 3. Besin Deneme & Anne/Bebek Notları
+                <i class="fa-solid fa-utensils text-amber-600"></i> 2. Besin Tolerasyon Değerlendirme & Notlar
+            </button>
+            <button onclick="tabDegistir('prickTab')" id="btnPrickTab" class="tab-btn px-6 py-4 flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-vial-virus text-pink-600"></i> 3. Deri Prick Test (Gıda Paneli 1 & 2)
             </button>
             <button onclick="tabDegistir('labTab')" id="btnLabTab" class="tab-btn px-6 py-4 flex items-center gap-2 whitespace-nowrap">
                 <i class="fa-solid fa-file-medical text-emerald-600"></i> 4. Testlerim & Tahlil Arşivi
@@ -150,7 +150,7 @@
             <div id="ladderTab" class="tab-content">
                 <div class="mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Klinik Besin ve Çorba Açma Sırası (Tüm Gıda Grupları)</h3>
-                    <p class="text-xs text-slate-500">İstediğiniz kategoriye "➕ Özel Ürün Ekle" butonu ile yeni besinler ekleyebilirsiniz.</p>
+                    <p class="text-xs text-slate-500">İstediğiniz besinin yanındaki 📝 butonuna basarak <b>Güvenli / Alerjik / Deneniyor</b> değerlendirmesi yapabilirsiniz.</p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -165,44 +165,44 @@
                             <div id="milkBar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2.5 text-xs" id="milkLadderContainer">
-                            <label class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
+                            <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
-                                    <span>1. Basamak: Fırınlanmış Kek / Muffin (180°C 30 dk)</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                    <span>1. Basamak: Fırınlanmış Kek / Muffin (180°C)</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Düşük Risk</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Fırınlanmış Sütlü Kek', 'Süt ve Süt Ürünleri')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-blue-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
-                                    <span>2. Basamak: Fırınlanmış Peynirli Börek / Poğaça</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                    <span>2. Basamak: Fırınlanmış Peynirli Börek</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Orta Risk</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Fırınlanmış Peynirli Börek', 'Süt ve Süt Ürünleri')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-blue-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
-                                    <span>3. Basamak: Fermante Ürünler (Ev Yapımı Yoğurt, Peynir)</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                    <span>3. Basamak: Fermante Ürünler (Yoğurt, Peynir)</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Mayalanmış</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Yoğurt / Peynir', 'Süt ve Süt Ürünleri')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-blue-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
-                                    <span>4. Basamak: Pişirilmiş Süt (Sütlü Çorba / Muhallebi / Sütlaç)</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                    <span>4. Basamak: Pişirilmiş Süt (Sütlaç / Muhallebi)</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Sıcak Sıvı</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Sütlaç / Muhallebi', 'Süt ve Süt Ürünleri')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-blue-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-blue-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded">
-                                    <span>5. Basamak: Taze Pastörize Çiğ Süt</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'milk')" class="w-4 h-4 text-blue-600 rounded cursor-pointer">
+                                    <span>5. Basamak: Taze Pastörize Süt</span>
                                 </div>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded">Hedef</span>
-                            </label>
+                                <button onclick="besinDegerlendir('Taze Süt', 'Süt ve Süt Ürünleri')" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-lg border border-blue-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
                         </div>
-                        <button onclick="ozelUrunEkle('milkLadderContainer', 'milk', 'blue')" class="w-full mt-3 bg-white hover:bg-blue-100 text-blue-700 font-semibold text-xs py-2 rounded-xl border border-blue-200 transition">
-                            ➕ Bu Kategoriye Özel Ürün Ekle (Örn: Sütlaç)
+                        <button onclick="ozelUrunEkle('milkLadderContainer', 'milk', 'blue', 'Süt ve Süt Ürünleri')" class="w-full mt-3 bg-white hover:bg-blue-100 text-blue-700 font-semibold text-xs py-2 rounded-xl border border-blue-200 transition">
+                            ➕ Bu Kategoriye Özel Ürün Ekle
                         </button>
                     </div>
 
@@ -216,41 +216,41 @@
                             <div id="eggBar" class="bg-amber-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2.5 text-xs" id="eggLadderContainer">
-                            <label class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between cursor-pointer">
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded cursor-pointer">
                                     <span>1. Basamak: Fırınlanmış Yumurtalı Kek</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Pişmiş</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Fırınlanmış Yumurtalı Kek', 'Yumurta')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold px-2.5 py-1 rounded-lg border border-amber-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
-                                    <span>2. Basamak: İyice Haşlanmış Yumurta Sarısı (15-20 dk)</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded cursor-pointer">
+                                    <span>2. Basamak: İyice Haşlanmış Yumurta Sarısı</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Yalnız Sarı</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Yumurta Sarısı', 'Yumurta')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold px-2.5 py-1 rounded-lg border border-amber-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
-                                    <span>3. Basamak: İyice Haşlanmış Yumurta Beyazı / Akı</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded cursor-pointer">
+                                    <span>3. Basamak: Haşlanmış Yumurta Beyazı / Tam Yumurta</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Tam Yumurta</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Yumurta Beyazı', 'Yumurta')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold px-2.5 py-1 rounded-lg border border-amber-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-amber-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded">
-                                    <span>4. Basamak: Az Pişmiş Yumurta / Omlet / Çılbır</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'egg')" class="w-4 h-4 text-amber-600 rounded cursor-pointer">
+                                    <span>4. Basamak: Az Pişmiş Yumurta / Omlet</span>
                                 </div>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded">Hedef</span>
-                            </label>
+                                <button onclick="besinDegerlendir('Omlet / Az Pişmiş Yumurta', 'Yumurta')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold px-2.5 py-1 rounded-lg border border-amber-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
                         </div>
-                        <button onclick="ozelUrunEkle('eggLadderContainer', 'egg', 'amber')" class="w-full mt-3 bg-white hover:bg-amber-100 text-amber-700 font-semibold text-xs py-2 rounded-xl border border-amber-200 transition">
+                        <button onclick="ozelUrunEkle('eggLadderContainer', 'egg', 'amber', 'Yumurta')" class="w-full mt-3 bg-white hover:bg-amber-100 text-amber-700 font-semibold text-xs py-2 rounded-xl border border-amber-200 transition">
                             ➕ Bu Kategoriye Özel Ürün Ekle
                         </button>
                     </div>
 
-                    <!-- 3. BAKLAGİL VE ÇORBALAR (YOĞURT ÇORBASI EKLENDİ) -->
+                    <!-- 3. BAKLAGİL VE ÇORBALAR -->
                     <div class="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-5">
                         <div class="flex justify-between items-center mb-3">
                             <h4 class="font-bold text-emerald-900 flex items-center gap-2">🍲 Baklagiller & Çorbalar</h4>
@@ -260,44 +260,37 @@
                             <div id="soupBar" class="bg-emerald-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2.5 text-xs" id="soupLadderContainer">
-                            <label class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between cursor-pointer">
+                            <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded">
-                                    <span>1. Basamak: Sebze Çorbaları (Kabak, Havuç, Patates)</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded cursor-pointer">
+                                    <span>1. Basamak: Sebze Çorbası</span>
                                 </div>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">İlk Ek Gıda</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Sebze Çorbası', 'Baklagil / Çorba')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded cursor-pointer">
                                     <span>2. Basamak: Kırmızı Mercimek Çorbası</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Hafif Baklagil</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Kırmızı Mercimek Çorbası', 'Baklagil / Çorba')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded">
-                                    <span>3. Basamak: Yoğurt Çorbası / Yayla Çorbası</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded cursor-pointer">
+                                    <span>3. Basamak: Yoğurt / Yayla Çorbası</span>
                                 </div>
-                                <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded">Yoğurtlu/Sütlü</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Yoğurt Çorbası', 'Baklagil / Çorba')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded cursor-pointer">
                                     <span>4. Basamak: Yeşil Mercimek / Nohut / Kuru Fasulye</span>
                                 </div>
-                                <span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded">Lifli Baklagil</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-emerald-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'soup')" class="w-4 h-4 text-emerald-600 rounded">
-                                    <span>5. Basamak: Soya ve Soya İçeren Çorbalar</span>
-                                </div>
-                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">Yüksek Alerjen</span>
-                            </label>
+                                <button onclick="besinDegerlendir('Nohut / Kuru Fasulye', 'Baklagil / Çorba')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-lg border border-emerald-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
                         </div>
-                        <button onclick="ozelUrunEkle('soupLadderContainer', 'soup', 'emerald')" class="w-full mt-3 bg-white hover:bg-emerald-100 text-emerald-700 font-semibold text-xs py-2 rounded-xl border border-emerald-200 transition">
-                            ➕ Bu Kategoriye Özel Ürün/Çorba Ekle
+                        <button onclick="ozelUrunEkle('soupLadderContainer', 'soup', 'emerald', 'Baklagil / Çorba')" class="w-full mt-3 bg-white hover:bg-emerald-100 text-emerald-700 font-semibold text-xs py-2 rounded-xl border border-emerald-200 transition">
+                            ➕ Bu Kategoriye Özel Çorba Ekle
                         </button>
                     </div>
 
@@ -311,88 +304,100 @@
                             <div id="fruitBar" class="bg-purple-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                         <div class="space-y-2.5 text-xs" id="fruitLadderContainer">
-                            <label class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between cursor-pointer">
+                            <div class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded">
-                                    <span>1. Basamak: Elma, Armut, Bal Kabağı, Kabak</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded cursor-pointer">
+                                    <span>1. Basamak: Elma, Armut, Bal Kabağı</span>
                                 </div>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">Hipoalerjenik</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Elma / Armut', 'Meyve / Sebze')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-lg border border-purple-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded">
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded cursor-pointer">
                                     <span>2. Basamak: Şeftali, Muz, Havuç, Brokoli</span>
                                 </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">2. Aşama</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between cursor-pointer">
+                                <button onclick="besinDegerlendir('Şeftali / Muz', 'Meyve / Sebze')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-lg border border-purple-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded">
-                                    <span>3. Basamak: Turunçgiller (Portakal, Mandalin), Kivi</span>
+                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded cursor-pointer">
+                                    <span>3. Basamak: Çilek, Domates, Patlıcan</span>
                                 </div>
-                                <span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded">Asidik Meyve</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-purple-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'fruit')" class="w-4 h-4 text-purple-600 rounded">
-                                    <span>4. Basamak: Çilek, Domates, Patlıcan</span>
-                                </div>
-                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">Histamin Salgılatıcı</span>
-                            </label>
+                                <button onclick="besinDegerlendir('Çilek / Domates', 'Meyve / Sebze')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 font-bold px-2.5 py-1 rounded-lg border border-purple-200 text-[11px]">📝 Değerlendir</button>
+                            </div>
                         </div>
-                        <button onclick="ozelUrunEkle('fruitLadderContainer', 'fruit', 'purple')" class="w-full mt-3 bg-white hover:bg-purple-100 text-purple-700 font-semibold text-xs py-2 rounded-xl border border-purple-200 transition">
+                        <button onclick="ozelUrunEkle('fruitLadderContainer', 'fruit', 'purple', 'Meyve / Sebze')" class="w-full mt-3 bg-white hover:bg-purple-100 text-purple-700 font-semibold text-xs py-2 rounded-xl border border-purple-200 transition">
                             ➕ Bu Kategoriye Özel Meyve/Sebze Ekle
-                        </button>
-                    </div>
-
-                    <!-- 5. ET VE PROTEİN AÇMA MERDİVENİ -->
-                    <div class="bg-rose-50/50 border border-rose-200 rounded-2xl p-5 lg:col-span-2">
-                        <div class="flex justify-between items-center mb-3">
-                            <h4 class="font-bold text-rose-900 flex items-center gap-2">🥩 Et & Protein Çeşitleri</h4>
-                            <span class="text-xs bg-rose-200 text-rose-800 font-bold px-2 py-0.5 rounded-full" id="meatProgress">0/4 Tamamlandı</span>
-                        </div>
-                        <div class="w-full bg-rose-200 h-2 rounded-full mb-4 overflow-hidden">
-                            <div id="meatBar" class="bg-rose-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                        </div>
-                        <div class="space-y-2.5 text-xs" id="meatLadderContainer">
-                            <label class="bg-white p-2.5 rounded-xl border border-rose-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'meat')" class="w-4 h-4 text-rose-600 rounded">
-                                    <span>1. Basamak: Kuzu Eti (En Hipoalerjenik Et)</span>
-                                </div>
-                                <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">En Güvenli</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-rose-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'meat')" class="w-4 h-4 text-rose-600 rounded">
-                                    <span>2. Basamak: Hindi Eti / Tavuk Eti</span>
-                                </div>
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Beyaz Et</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-rose-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'meat')" class="w-4 h-4 text-rose-600 rounded">
-                                    <span>3. Basamak: Dana Eti / Sığır Eti</span>
-                                </div>
-                                <span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded">Çapraz Risk</span>
-                            </label>
-                            <label class="bg-white p-2.5 rounded-xl border border-rose-100 flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="checkbox" onchange="ladderStepChange(this, 'meat')" class="w-4 h-4 text-rose-600 rounded">
-                                    <span>4. Basamak: Balık ve Deniz Ürünleri</span>
-                                </div>
-                                <span class="text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded">Yüksek Risk</span>
-                            </label>
-                        </div>
-                        <button onclick="ozelUrunEkle('meatLadderContainer', 'meat', 'rose')" class="w-full mt-3 bg-white hover:bg-rose-100 text-rose-700 font-semibold text-xs py-2 rounded-xl border border-rose-200 transition">
-                            ➕ Bu Kategoriye Özel Et/Protein Ekle
                         </button>
                     </div>
 
                 </div>
             </div>
 
-            <!-- 2. SEKME: DERİ PRİCK TESTİ -->
+            <!-- 2. SEKME: BESİN DENEME & ANNE/BEBEK NOTLARI -->
+            <div id="trialTab" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h4 class="font-bold text-slate-800 mb-4 border-b pb-2">Besin Tolerasyon Değerlendirmesi</h4>
+                        <form id="reaksiyonForm" onsubmit="reaksiyonEkle(event)" class="space-y-4 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Besin / Çorba Adı *</label>
+                                <input type="text" id="foodName" required placeholder="Örn: Sütlaç, Yoğurt Çorbası, Kuzu Eti" class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-amber-500">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Kategori</label>
+                                <select id="foodCategory" class="w-full border rounded-lg p-2.5 outline-none">
+                                    <option value="Süt ve Süt Ürünleri">Süt ve Süt Ürünleri</option>
+                                    <option value="Baklagil / Çorba">Baklagil / Çorba</option>
+                                    <option value="Meyve / Sebze">Meyve / Sebze</option>
+                                    <option value="Et / Protein">Et / Protein</option>
+                                    <option value="Yumurta">Yumurta</option>
+                                    <option value="Kuruyemiş">Kuruyemiş</option>
+                                    <option value="Tahıl / Gluten">Tahıl / Gluten</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Deneme Şekli (Kimin Tükettiği) *</label>
+                                <select id="trialType" class="w-full border rounded-lg p-2.5 outline-none font-semibold text-indigo-700 bg-indigo-50">
+                                    <option value="ANNE_DIYETI">🤱 ANNE DİYET AÇTI (Anne Sütü İle)</option>
+                                    <option value="BEBEK_EK_GIDA">👶 BEBEK DİREKT YEDİ (Ek Gıda)</option>
+                                    <option value="HER_IKISI">🤱+👶 HEM ANNE HEM BEBEK</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Tolerasyon Durumu *</label>
+                                <select id="trialStatus" class="w-full border rounded-lg p-2.5 outline-none font-bold">
+                                    <option value="GUVENLI" class="text-emerald-600">🟢 GÜVENLİ (Tolerans Sağlandı / Reaksiyon Yok)</option>
+                                    <option value="ALERJIK" class="text-red-600">🔴 ALERJİK (Reaksiyon Verdi)</option>
+                                    <option value="DENENIYOR" class="text-amber-600">🟡 DENENİYOR (Şüpheli / Takipte)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">👩 ANNE NOTU & SEMPTOMLARI</label>
+                                <textarea id="motherNotes" rows="2" placeholder="Örn: Anne sütlaç yedi, gaz/sindirim durumu..." class="w-full border rounded-lg p-2 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">👶 BEBEK / ÇOCUK NOTU & REAKSİYONLARI</label>
+                                <textarea id="babyNotes" rows="2" placeholder="Örn: Yoğurt çorbası sonrası döküntü, kaka mukusu..." class="w-full border rounded-lg p-2 outline-none"></textarea>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Reaksiyon Şiddeti (1-5)</label>
+                                <input type="range" id="severity" min="1" max="5" value="1" class="w-full">
+                            </div>
+                            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg shadow-sm">
+                                Kaydet & Listeye Ekle
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="lg:col-span-2 space-y-4">
+                        <h4 class="font-bold text-slate-800 mb-2">Besin Deneme Günlüğü & Semptom Zaman Çizelgesi</h4>
+                        <div id="denemeListesi" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SEKME: DERİ PRİCK TESTİ -->
             <div id="prickTab" class="tab-content hidden">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -422,69 +427,6 @@
                             <span class="text-xs text-slate-400 font-normal">Wheal (mm) / Erythema (me)</span>
                         </h4>
                         <div class="space-y-3 text-xs" id="panel2List"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. SEKME: BESİN DENEME & ANNE/BEBEK NOTLARI -->
-            <div id="trialTab" class="tab-content hidden">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-                        <h4 class="font-bold text-slate-800 mb-4 border-b pb-2">Yeni Besin Denemesi Ekle</h4>
-                        <form id="reaksiyonForm" onsubmit="reaksiyonEkle(event)" class="space-y-4 text-xs">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Besin / Çorba Adı *</label>
-                                <input type="text" id="foodName" required placeholder="Örn: Sütlaç, Yoğurt Çorbası, Kuzu Eti" class="w-full border rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-amber-500">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Kategori</label>
-                                <select id="foodCategory" class="w-full border rounded-lg p-2.5 outline-none">
-                                    <option value="Süt ve Süt Ürünleri">Süt ve Süt Ürünleri</option>
-                                    <option value="Baklagil / Çorba">Baklagil / Çorba</option>
-                                    <option value="Meyve / Sebze">Meyve / Sebze</option>
-                                    <option value="Et / Protein">Et / Protein</option>
-                                    <option value="Yumurta">Yumurta</option>
-                                    <option value="Kuruyemiş">Kuruyemiş</option>
-                                    <option value="Tahıl / Gluten">Tahıl / Gluten</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Deneme Şekli (Kimin Tükettiği) *</label>
-                                <select id="trialType" class="w-full border rounded-lg p-2.5 outline-none font-semibold text-indigo-700 bg-indigo-50">
-                                    <option value="ANNE_DIYETI">🤱 ANNE DİYET AÇTI (Anne Sütü İle)</option>
-                                    <option value="BEBEK_EK_GIDA">👶 BEBEK DİREKT YEDİ (Ek Gıda)</option>
-                                    <option value="HER_IKISI">🤱+👶 HEM ANNE HEM BEBEK</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Tolerasyon Durumu *</label>
-                                <select id="trialStatus" class="w-full border rounded-lg p-2.5 outline-none font-bold">
-                                    <option value="GUVENLI" class="text-emerald-600">🟢 GÜVENLİ (Tolerans Sağlandı)</option>
-                                    <option value="ALERJIK" class="text-red-600">🔴 ALERJİK (Reaksiyon Verdi)</option>
-                                    <option value="DENENIYOR" class="text-amber-600">🟡 DENENİYOR (Şüpheli / Takipte)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">👩 ANNE NOTU & SEMPTOMLARI</label>
-                                <textarea id="motherNotes" rows="2" placeholder="Örn: Anne sütlaç yedi, gaz/sindirim durumu..." class="w-full border rounded-lg p-2 outline-none"></textarea>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">👶 BEBEK / ÇOCUK NOTU & REAKSİYONLARI</label>
-                                <textarea id="babyNotes" rows="2" placeholder="Örn: Yoğurt çorbası sonrası döküntü, kaka mukusu..." class="w-full border rounded-lg p-2 outline-none"></textarea>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Reaksiyon Şiddeti (1-5)</label>
-                                <input type="range" id="severity" min="1" max="5" value="1" class="w-full">
-                            </div>
-                            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg shadow-sm">
-                                Kaydet & Listeye Ekle
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="lg:col-span-2 space-y-4">
-                        <h4 class="font-bold text-slate-800 mb-2">Besin Deneme Günlüğü & Semptom Zaman Çizelgesi</h4>
-                        <div id="denemeListesi" class="space-y-3"></div>
                     </div>
                 </div>
             </div>
@@ -554,9 +496,16 @@
 
         document.getElementById(tabId).classList.remove('hidden');
         if(tabId === 'ladderTab') document.getElementById('btnLadderTab').classList.add('active-tab');
-        if(tabId === 'prickTab') document.getElementById('btnPrickTab').classList.add('active-tab');
         if(tabId === 'trialTab') document.getElementById('btnTrialTab').classList.add('active-tab');
+        if(tabId === 'prickTab') document.getElementById('btnPrickTab').classList.add('active-tab');
         if(tabId === 'labTab') document.getElementById('btnLabTab').classList.add('active-tab');
+    }
+
+    function besinDegerlendir(besinAdi, kategori) {
+        tabDegistir('trialTab');
+        document.getElementById('foodName').value = besinAdi;
+        if(kategori) document.getElementById('foodCategory').value = kategori;
+        window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 
     function prickFormunuCiz() {
@@ -737,22 +686,19 @@
         }
     }
 
-    // DİNAMİK ÖZEL ÜRÜN EKLEME FONKSİYONU
-    function ozelUrunEkle(containerId, type, color) {
-        const urunAdi = prompt("Eklemek istediğiniz özel ürünün adını girin (Örn: Sütlaç, Yoğurtlu Çorba, Dondurma):");
+    function ozelUrunEkle(containerId, type, color, kategori) {
+        const urunAdi = prompt("Eklemek istediğiniz özel ürünün adını girin:");
         if (!urunAdi) return;
 
         const container = document.getElementById(containerId);
-        const adimSayisi = container.children.length + 1;
-
-        const newStep = document.createElement("label");
-        newStep.className = `bg-white p-2.5 rounded-xl border border-${color}-100 flex items-center justify-between cursor-pointer`;
+        const newStep = document.createElement("div");
+        newStep.className = `bg-white p-2.5 rounded-xl border border-${color}-100 flex items-center justify-between`;
         newStep.innerHTML = `
             <div class="flex items-center gap-2.5">
-                <input type="checkbox" onchange="ladderStepChange(this, '${type}')" class="w-4 h-4 text-${color}-600 rounded">
-                <span>${adimSayisi}. Basamak: ${urunAdi}</span>
+                <input type="checkbox" onchange="ladderStepChange(this, '${type}')" class="w-4 h-4 text-${color}-600 rounded cursor-pointer">
+                <span>${urunAdi}</span>
             </div>
-            <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Özel Ürün</span>
+            <button onclick="besinDegerlendir('${urunAdi}', '${kategori}')" class="bg-${color}-50 hover:bg-${color}-100 text-${color}-700 font-bold px-2.5 py-1 rounded-lg border border-${color}-200 text-[11px]">📝 Değerlendir</button>
         `;
 
         container.appendChild(newStep);
